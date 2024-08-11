@@ -14,7 +14,9 @@ import { filter, map, tap } from 'rxjs/operators';
 })
 export class UserTableListComponent extends ModalManager implements OnInit, OnDestroy {
 
+  public isLoading: boolean = false;
   public users: UserModel[];
+  public filteredUsers: UserModel[];
   public createUserForm: FormGroup;
   public updateUserForm: FormGroup;
   private modalSubscription: Subscription;
@@ -57,13 +59,35 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
   }
 
   public getAllUsers(): void {
+    this.isLoading = true;
     this.userService.getAllUsers().subscribe((value: UserModel[]): void => {
       this.users = value;
+      this.filteredUsers = this.users;
+      this.isLoading = false;
+    }, (): void => {
+      this.isLoading = false;
+      this.toastrService.error('Failed to load users.');
     });
   }
 
-  public createNewUser(): void {
+  public filterUsers(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
 
+    if (!filterValue) {
+      this.filteredUsers = this.users;
+    } else {
+      this.filteredUsers = this.users.filter(user =>
+        user.name.toLowerCase().includes(filterValue) ||
+        user.email.toLowerCase().includes(filterValue)
+      );
+    }
+
+    if (this.filteredUsers.length === 0) {
+      this.toastrService.info('No users match your search.');
+    }
+  }
+
+  public createNewUser(): void {
     if (this.createUserForm.invalid) {
       this.toastrService.error('Please fill in all required fields correctly.');
       this.createUserForm.markAllAsTouched();
@@ -96,7 +120,6 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
   }
 
   public updateExistingUser(): void {
-
     if (this.updateUserForm.invalid) {
       this.toastrService.error('Please fill in all required fields correctly.');
       this.updateUserForm.markAllAsTouched();
@@ -116,7 +139,7 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
         complete: (): void => {
           this.toastrService.success('User updated successfully.');
         }
-      })
+      });
     }
   }
 
