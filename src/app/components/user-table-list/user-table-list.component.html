@@ -1,26 +1,41 @@
 <div class="table-container">
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Search users..." (input)="filterUsers($event)" />
+  </div>
   <button class="add-user-button" (click)="openModal('createUserModal')">Add User</button>
-  <table class="user-table">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>
-        <button class="action-button edit-button" (click)="openEditModal(user)">Edit</button>
-        <button class="action-button delete-button" (click)="deleteUser(user.id)">Delete</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+
+  <ng-container *ngIf="isLoading; else dataLoaded">
+    <p>Loading users...</p>
+  </ng-container>
+
+  <ng-template #dataLoaded>
+    <ng-container *ngIf="filteredUsers.length > 0; else noUsers">
+      <table class="user-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <button class="action-button edit-button" (click)="openEditModal(user)">Edit</button>
+            <button class="action-button delete-button" (click)="deleteUser(user.id)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noUsers>
+      <p>No users found.</p>
+    </ng-template>
+  </ng-template>
 </div>
 
 <app-modal [isModalShow]="isModalVisible('createUserModal')"
