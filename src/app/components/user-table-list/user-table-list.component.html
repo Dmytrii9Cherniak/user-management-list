@@ -1,5 +1,5 @@
 <div class="table-container">
-  <button class="add-user-button">Add User</button>
+  <button class="add-user-button" (click)="openModal('createUserModal')">Add User</button>
   <table class="user-table">
     <thead>
     <tr>
@@ -15,10 +15,78 @@
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
       <td>
-        <button class="action-button edit-button">Edit</button>
+        <button class="action-button edit-button" (click)="openEditModal(user)">Edit</button>
         <button class="action-button delete-button" (click)="deleteUser(user.id)">Delete</button>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<app-modal [isModalShow]="isModalVisible('createUserModal')"
+           (modalVisibleChange)="handleModalVisibilityChange('createUserModal', $event)">
+  <ng-template #modalHeader>
+    <h2>Create New User</h2>
+  </ng-template>
+
+  <ng-template #modalBody>
+    <form [formGroup]="createUserForm" class="modal-form">
+      <div class="form-group">
+        <label for="createName">Name</label>
+        <input id="createName" formControlName="name" type="text" class="form-control"
+               [ngClass]="{'is-invalid': createUserForm.get('name')?.invalid && createUserForm.get('name')?.touched}"/>
+        <div class="error-message" *ngIf="createUserForm.get('name')?.invalid && createUserForm.get('name')?.touched">
+          <span *ngIf="createUserForm.get('name')?.errors?.['required']">Name is required</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="createEmail">Email</label>
+        <input id="createEmail" formControlName="email" type="email" class="form-control"
+               [ngClass]="{'is-invalid': createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched}"/>
+        <div class="error-message" *ngIf="createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched">
+          <span *ngIf="createUserForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="createUserForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button (click)="createNewUser()" class="modal-save-button">Create</button>
+    <button (click)="closeModal('createUserModal')" class="modal-cancel-button">Cancel</button>
+  </ng-template>
+</app-modal>
+
+<app-modal [isModalShow]="isModalVisible('editUserModal')"
+           (modalVisibleChange)="handleModalVisibilityChange('editUserModal', $event)">
+  <ng-template #modalHeader>
+    <h2>Edit User</h2>
+  </ng-template>
+
+  <ng-template #modalBody>
+    <form [formGroup]="updateUserForm" class="modal-form">
+      <div class="form-group">
+        <label for="editName">Name</label>
+        <input id="editName" formControlName="name" type="text" class="form-control"
+               [ngClass]="{'is-invalid': updateUserForm.get('name')?.invalid && updateUserForm.get('name')?.touched}"/>
+        <div class="error-message" *ngIf="updateUserForm.get('name')?.invalid && updateUserForm.get('name')?.touched">
+          <span *ngIf="updateUserForm.get('name')?.errors?.['required']">Name is required</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="editEmail">Email</label>
+        <input id="editEmail" formControlName="email" type="email" class="form-control"
+               [ngClass]="{'is-invalid': updateUserForm.get('email')?.invalid && updateUserForm.get('email')?.touched}"/>
+        <div class="error-message" *ngIf="updateUserForm.get('email')?.invalid && updateUserForm.get('email')?.touched">
+          <span *ngIf="updateUserForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="updateUserForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button (click)="updateExistingUser()" class="modal-save-button">Save</button>
+    <button (click)="closeModal('editUserModal')" class="modal-cancel-button">Cancel</button>
+  </ng-template>
+</app-modal>
