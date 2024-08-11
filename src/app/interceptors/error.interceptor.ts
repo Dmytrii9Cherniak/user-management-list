@@ -1,35 +1,30 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
-  constructor(private toastr: ToastrService) {}
+  const toastr: ToastrService = inject(ToastrService);
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('Intercepted request:', req); // Логування запиту
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Intercepted error:', error); // Логування помилки
-        let errorMessage = 'An unknown error occurred!';
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Error: ${error.error.message}`;
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      let errorMsg = '';
+      if (error.error instanceof ErrorEvent) {
+        console.log('This is a client-side error');
+        errorMsg = `Error: ${error.error.message}`;
+      } else {
+        console.log('This is a server-side error');
+        errorMsg = `Error Code: ${error.status}, Message: ${error.message}`;
+        if (error.status === 404) {
+          toastr.error('Resource not found (404)');
         } else {
-          errorMessage = `Server Error: ${error.message}`;
+          toastr.error(`Error: ${error.message}`);
         }
-        this.toastr.error(errorMessage, 'Server Error');
-        return throwError(() => error);
-      })
-    );
-  }
-
-}
+      }
+      return throwError(() => new Error(errorMsg));
+    })
+  );
+};
