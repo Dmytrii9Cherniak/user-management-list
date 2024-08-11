@@ -15,8 +15,8 @@ import { filter, map, tap } from 'rxjs/operators';
 export class UserTableListComponent extends ModalManager implements OnInit, OnDestroy {
 
   public isLoading: boolean = false;
-  public users: UserModel[];
-  public filteredUsers: UserModel[];
+  public users: UserModel[] = [];
+  public filteredUsers: UserModel[] = [];
   public createUserForm: FormGroup;
   public updateUserForm: FormGroup;
   private modalSubscription: Subscription;
@@ -60,14 +60,20 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
 
   public getAllUsers(): void {
     this.isLoading = true;
-    this.userService.getAllUsers().subscribe((value: UserModel[]): void => {
-      this.users = value;
-      this.filteredUsers = this.users;
-      this.isLoading = false;
-    }, (): void => {
-      this.isLoading = false;
-      this.toastrService.error('Failed to load users.');
-    });
+
+    this.userService.getAllUsers().subscribe({
+      next: value => {
+        this.users = value;
+        this.filteredUsers = this.users;
+      },
+      error: err => {
+        console.log(err);
+        this.toastrService.error('Failed to load users.');
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    })
   }
 
   public filterUsers(event: Event): void {
