@@ -1,24 +1,5 @@
 {
   "users": [
-    {
-      "id": "5039",
-      "name": "Good",
-      "email": "Good@gmail.com"
-    },
-    {
-      "id": "f761",
-      "name": "Dmytrii",
-      "email": "wow@gmail.com"
-    },
-    {
-      "id": "170d",
-      "name": "Xray",
-      "email": "amazing@gmail.com"
-    },
-    {
-      "id": "f3b9",
-      "name": "ng",
-      "email": "ab@gmaill.com"
-    }
+
   ]
 }
