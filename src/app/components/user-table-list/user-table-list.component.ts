@@ -74,7 +74,7 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
         }
       },
       error: err => {
-        console.log(err);
+        console.error(err);
         this.toastrService.error('Failed to load users.');
       },
       complete: () => {
