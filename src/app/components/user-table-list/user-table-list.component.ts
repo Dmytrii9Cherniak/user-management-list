@@ -21,6 +21,9 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
   public updateUserForm: FormGroup;
   private modalSubscription: Subscription;
   private selectedUser: UserModel | null = null;
+  public sortColumn: keyof UserModel = 'name';
+  public sortDirection: boolean = true;
+  private isSorted: boolean = false;
 
   constructor(
     private userService: UsersService,
@@ -64,7 +67,11 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
     this.userService.getAllUsers().subscribe({
       next: value => {
         this.users = value;
-        this.filteredUsers = this.users;
+        this.filteredUsers = [...this.users];
+
+        if (this.isSorted) {
+          this.sortTable(this.sortColumn);
+        }
       },
       error: err => {
         console.log(err);
@@ -73,7 +80,7 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
       complete: () => {
         this.isLoading = false;
       }
-    })
+    });
   }
 
   public filterUsers(event: Event): void {
@@ -91,6 +98,38 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
     if (this.filteredUsers.length === 0) {
       this.toastrService.info('No users match your search.');
     }
+
+    this.sortTable(this.sortColumn);
+  }
+
+  public sortTable(column: keyof UserModel): void {
+    this.isSorted = true;
+
+    if (this.sortColumn !== column) {
+      this.sortColumn = column;
+      this.sortDirection = true;
+    } else {
+      this.sortDirection = !this.sortDirection;
+    }
+
+    this.filteredUsers = [...this.filteredUsers].sort((a, b) => {
+      let valueA = a[this.sortColumn];
+      let valueB = b[this.sortColumn];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      if (valueA < valueB) {
+        return this.sortDirection ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.sortDirection ? 1 : -1;
+      }
+      return 0;
+    });
+
   }
 
   public createNewUser(): void {
@@ -105,6 +144,10 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
         next: () :void => {
           this.closeModal('createUserModal');
           this.getAllUsers();
+
+          if (this.isSorted) {
+            this.sortTable(this.sortColumn);
+          }
         },
         error: (err) :void => {
           console.error(err)
@@ -138,6 +181,10 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
           this.updateUserForm.reset();
           this.closeModal('editUserModal');
           this.getAllUsers();
+
+          if (this.isSorted) {
+            this.sortTable(this.sortColumn);
+          }
         },
         error: (error): void => {
           console.error(error);
@@ -153,6 +200,9 @@ export class UserTableListComponent extends ModalManager implements OnInit, OnDe
     this.userService.deleteUser(id).subscribe({
       next: (): void => {
         this.getAllUsers();
+        if (this.isSorted) {
+          this.sortTable(this.sortColumn);
+        }
       },
       error: (error): void => {
         console.error(error);

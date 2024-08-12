@@ -14,8 +14,18 @@
         <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
+          <th class="sortable-column" (click)="sortTable('name')">
+            <div class="header-content">
+              <span>Name</span>
+              <app-svg-icon iconName="SORT_ASC"></app-svg-icon>
+            </div>
+          </th>
+          <th class="sortable-column" (click)="sortTable('email')">
+            <div class="header-content">
+              <span>Email</span>
+              <app-svg-icon iconName="SORT_ASC"></app-svg-icon>
+            </div>
+          </th>
           <th>Action</th>
         </tr>
         </thead>
@@ -37,6 +47,7 @@
     </ng-template>
   </ng-template>
 </div>
+
 
 <app-modal [isModalShow]="isModalVisible('createUserModal')"
            (modalVisibleChange)="handleModalVisibilityChange('createUserModal', $event)">

@@ -41,7 +41,10 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 
     th {
+      white-space: nowrap;
+      height: 60px;
       background-color: #f4f4f4;
+      cursor: pointer;
     }
 
     tr:nth-child(even) {
@@ -53,6 +56,19 @@
       border: 1px solid #ddd;
       text-align: left;
     }
+
+    .sortable-column {
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+    }
+  }
+
+  .sort-icon {
+    cursor: pointer;
   }
 
   .action-button {
@@ -73,6 +89,9 @@
     color: white;
   }
 }
+
+
+
 
 .modal-form {
   display: flex;
@@ -149,139 +168,3 @@
     background-color: #c82333;
   }
 }
-
-
-
-//.table-container {
-//  padding: 20px;
-//  max-width: 800px;
-//  margin: auto;
-//
-//  .add-user-button {
-//    display: block;
-//    margin-bottom: 10px;
-//    padding: 10px 20px;
-//    background-color: #007bff;
-//    color: white;
-//    border: none;
-//    border-radius: 5px;
-//    cursor: pointer;
-//    font-size: 16px;
-//    text-align: center;
-//  }
-//
-//  .user-table {
-//    width: 100%;
-//    border-collapse: collapse;
-//    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-//
-//    th {
-//      background-color: #f4f4f4;
-//    }
-//
-//    tr:nth-child(even) {
-//      background-color: #f9f9f9;
-//    }
-//
-//    th, td {
-//      padding: 10px;
-//      border: 1px solid #ddd;
-//      text-align: left;
-//    }
-//  }
-//
-//  .action-button {
-//    padding: 5px 10px;
-//    margin-right: 5px;
-//    border: none;
-//    border-radius: 3px;
-//    cursor: pointer;
-//  }
-//
-//  .edit-button {
-//    background-color: #ffc107;
-//    color: white;
-//  }
-//
-//  .delete-button {
-//    background-color: #dc3545;
-//    color: white;
-//  }
-//
-//}
-//
-//.modal-form {
-//  display: flex;
-//  flex-direction: column;
-//  gap: 15px;
-//
-//  .form-group {
-//    display: flex;
-//    flex-direction: column;
-//    gap: 5px;
-//
-//    label {
-//      font-weight: bold;
-//      color: #333;
-//    }
-//
-//    .form-control {
-//      padding: 10px;
-//      border: 1px solid #ddd;
-//      border-radius: 5px;
-//      font-size: 14px;
-//      width: 100%;
-//      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-//
-//      &:focus {
-//        border-color: #007bff;
-//        outline: none;
-//        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-//      }
-//    }
-//
-//    .is-invalid {
-//      border-color: #dc3545;
-//      box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
-//    }
-//
-//    .error-message {
-//      color: #dc3545;
-//      font-size: 12px;
-//      margin-top: 5px;
-//
-//      span {
-//        display: block;
-//      }
-//    }
-//  }
-//}
-//
-//.modal-save-button {
-//  padding: 10px 20px;
-//  background-color: #28a745;
-//  color: white;
-//  border: none;
-//  border-radius: 5px;
-//  cursor: pointer;
-//  font-size: 16px;
-//
-//  &:hover {
-//    background-color: #218838;
-//  }
-//}
-//
-//.modal-cancel-button {
-//  padding: 10px 20px;
-//  background-color: #dc3545;
-//  color: white;
-//  border: none;
-//  border-radius: 5px;
-//  cursor: pointer;
-//  font-size: 16px;
-//  margin-left: 10px;
-//
-//  &:hover {
-//    background-color: #c82333;
-//  }
-//}

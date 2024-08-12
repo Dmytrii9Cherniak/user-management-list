@@ -3,7 +3,6 @@ import {
   ContentChild,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   TemplateRef
 } from '@angular/core';
@@ -26,7 +25,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 
-export class ModalComponent implements OnInit {
+export class ModalComponent {
 
   @Input() isModalShow: boolean = false;
 
@@ -35,10 +34,6 @@ export class ModalComponent implements OnInit {
   @ContentChild('modalFooter') modalFooter: TemplateRef<void>;
 
   @Output() modalVisibleChange = new EventEmitter<boolean>();
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   public hideModalWindow(): void {
     this.isModalShow = false;
