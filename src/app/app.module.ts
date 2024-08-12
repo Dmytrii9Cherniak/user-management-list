@@ -12,12 +12,16 @@ import { toastrConfig } from './configs/toastr.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { errorInterceptor } from './interceptors/error.interceptor';
+import {
+  SvgIconComponent
+} from './components/custom-icon-component/custom-icon-component.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModalComponent,
-    UserTableListComponent
+    UserTableListComponent,
+    SvgIconComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,8 @@ import { errorInterceptor } from './interceptors/error.interceptor';
     ReactiveFormsModule
   ],
   exports: [
-    ModalComponent
+    ModalComponent,
+    SvgIconComponent
   ],
   providers: [
     provideHttpClient(withInterceptors([errorInterceptor])),
