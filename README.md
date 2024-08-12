@@ -1,6 +1,19 @@
 # UserListManagement
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.2.
+UserListManagement allows administrators to manage user records with features like:
+
+- Adding new users
+- Editing existing users
+- Deleting users
+- Sorting and filtering user lists
+
+## Getting Started
+Prerequisites
+Before you begin, ensure you have the following installed:
+
+Node.js (version 14.x or later)
+Angular CLI (version 18.0.2)
 
 ## Development server
 
@@ -25,3 +38,23 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Folder Structure
+Here's an overview of the key folders and files in this project:
+
+<pre>
+/src
+  ├── /app               # Core application directory
+  │   ├── /components    # Reusable UI components shared across the application
+  │   ├── /configs       # Configuration files and settings for the application
+  │   ├── /interceptors  # HTTP interceptors for handling requests and responses
+  │   ├── /models        # TypeScript interfaces and models used in the application
+  │   ├── /OOP           # Object-Oriented Programming related utilities or classes
+  │   └── /services          # Services for handling business logic and data management
+  ├── /assets            # Static assets such as images, icons, and other media
+  └── /environments      # Environment-specific configuration files (e.g., development, production)
+</pre>
+
+
+
+
